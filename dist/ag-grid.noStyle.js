@@ -6972,12 +6972,23 @@ var GridPanel = (function (_super) {
         _this.verticalRedrawNeeded = false;
         return _this;
     }
+    Object.defineProperty(GridPanel.prototype, "scrollWidth", {
+        /**
+         * Getting scroll width is expensive. Only do it when necessary.
+         */
+        get: function () {
+            var width = this.calculatedScrollWidth || this.gridOptionsWrapper.getScrollbarWidth();
+            this.calculatedScrollWidth = width;
+            return width;
+        },
+        enumerable: true,
+        configurable: true
+    });
     GridPanel.prototype.agWire = function (loggerFactory) {
         this.logger = loggerFactory.create('GridPanel');
         // makes code below more readable if we pull 'forPrint' out
         this.forPrint = this.gridOptionsWrapper.isForPrint();
         this.autoHeight = this.gridOptionsWrapper.isAutoHeight();
-        this.scrollWidth = this.gridOptionsWrapper.getScrollbarWidth();
         this.enableRtl = this.gridOptionsWrapper.isEnableRtl();
         this.loadTemplate();
         this.findElements();
@@ -21551,7 +21562,11 @@ var BorderLayout = (function () {
     // returns true if any item changed size, otherwise returns false
     BorderLayout.prototype.doLayout = function () {
         var _this = this;
-        var isVisible = utils_1.Utils.isVisible(this.eGui);
+        var isVisible = true;
+        // the check for isVisible is expensive. Only do it if the element was hidden last time.
+        if (!this.visibleLastTime) {
+            isVisible = utils_1.Utils.isVisible(this.eGui);
+        }
         if (!isVisible) {
             this.visibleLastTime = false;
             return false;

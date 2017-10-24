@@ -85,10 +85,14 @@ export declare class GridPanel extends BeanStub {
     private enableRtl;
     private forPrint;
     private autoHeight;
-    private scrollWidth;
     private pinningRight;
     private pinningLeft;
     private useAnimationFrame;
+    private calculatedScrollWidth;
+    /**
+     * Getting scroll width is expensive. Only do it when necessary.
+     */
+    readonly scrollWidth: number;
     agWire(loggerFactory: LoggerFactory): void;
     getVerticalPixelRange(): any;
     destroy(): void;

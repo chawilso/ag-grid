@@ -104,7 +104,11 @@ var BorderLayout = (function () {
     // returns true if any item changed size, otherwise returns false
     BorderLayout.prototype.doLayout = function () {
         var _this = this;
-        var isVisible = utils_1.Utils.isVisible(this.eGui);
+        var isVisible = true;
+        // the check for isVisible is expensive. Only do it if the element was hidden last time.
+        if (!this.visibleLastTime) {
+            isVisible = utils_1.Utils.isVisible(this.eGui);
+        }
         if (!isVisible) {
             this.visibleLastTime = false;
             return false;
