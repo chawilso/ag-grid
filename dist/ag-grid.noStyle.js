@@ -10560,10 +10560,10 @@ var RowRenderer = (function (_super) {
             this.sizeContainerToPageHeight();
         }
         this.scrollToTopIfNewData(params);
-        // never keep rendered rows if doing forPrint or autoHeight, as we do not use 'top' to
+        // never keep rendered rows if doing forPrint, as we do not use 'top' to
         // position the rows (it uses normal flow), so we have to remove
         // all rows and insert them again from scratch
-        var rowsUsingFlow = this.forPrint || this.autoHeight;
+        var rowsUsingFlow = this.forPrint;
         var recycleRows = rowsUsingFlow ? false : params.recycleRows;
         var animate = rowsUsingFlow ? false : params.animate;
         var rowsToRecycle = this.binRowComps(recycleRows);
@@ -29807,7 +29807,7 @@ var RowContainerComponent = (function () {
         this.hideWhenNoChildren = params.hideWhenNoChildren;
     }
     RowContainerComponent.prototype.postConstruct = function () {
-        this.domOrder = this.gridOptionsWrapper.isEnsureDomOrder() && !this.gridOptionsWrapper.isForPrint();
+        this.domOrder = this.gridOptionsWrapper.isAutoHeight() || (this.gridOptionsWrapper.isEnsureDomOrder() && !this.gridOptionsWrapper.isForPrint());
         this.checkVisibility();
     };
     RowContainerComponent.prototype.getRowElement = function (compId) {

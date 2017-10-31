@@ -33,7 +33,7 @@ var RowContainerComponent = (function () {
         this.hideWhenNoChildren = params.hideWhenNoChildren;
     }
     RowContainerComponent.prototype.postConstruct = function () {
-        this.domOrder = this.gridOptionsWrapper.isEnsureDomOrder() && !this.gridOptionsWrapper.isForPrint();
+        this.domOrder = this.gridOptionsWrapper.isAutoHeight() || (this.gridOptionsWrapper.isEnsureDomOrder() && !this.gridOptionsWrapper.isForPrint());
         this.checkVisibility();
     };
     RowContainerComponent.prototype.getRowElement = function (compId) {
